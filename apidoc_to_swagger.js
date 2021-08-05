@@ -50,11 +50,11 @@ function extractPaths(apidocJson) {
         var matches = pattern.exec(url);
 
         // Surrounds URL parameters with curly brackets -> :email with {email}
-        var pathKeys = [];
-        for (let j = 1; j < matches.length; j++) {
-            var key = matches[j].substr(1);
-            url = url.replace(matches[j], "{" + key + "}");
-            pathKeys.push(key);
+        if (matches) {
+            for (let j = 1; j < matches.length; j++) {
+                let key = matches[j].substr(1);
+                url = url.replace(matches[j], "{" + key + "}");
+            }
         }
 
         for (let j = 0; j < verbs.length; j++) {
@@ -121,7 +121,7 @@ function transferApidocParamsToSwaggerBody(apiDocParams, parameterInBody) {
     }
 
     apiDocParams.forEach(i => {
-        const type = i.type.toLowerCase()
+        const type = i.type.toLowerCase() || ''
         const key = i.field
         const nestedName = createNestedName(i.field)
         const { objectName = '', propertyName } = nestedName
